@@ -1,0 +1,31 @@
+{
+	"name": "web-scraper",
+	"version": "1.0.0",
+	"description": "A simple web scraping tool.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node index.js",
+		"lint:check": "eslint . --ext .js",
+		"lint:fix": "eslint . --ext .js --fix",
+		"prettier:check": "prettier --check 'src/**/*.{js,json}'",
+		"prettier:format-src": "prettier --write 'src/**/*.{js,json}'",
+		"prettier:format-scripts": "prettier --write 'scripts/**/*.sh'"
+	},
+	"author": "s8srahme",
+	"license": "ISC",
+	"dependencies": {
+		"csv-parse": "^5.3.5",
+		"csv-stringify": "^6.2.4",
+		"puppeteer": "^19.7.0"
+	},
+	"devDependencies": {
+		"eslint": "^8.34.0",
+		"eslint-config-airbnb": "^19.0.4",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-config-prettier": "^8.6.0",
+		"eslint-plugin-import": "^2.27.5",
+		"eslint-plugin-prettier": "^4.2.1",
+		"prettier-plugin-sh": "^0.12.8"
+	}
+}
