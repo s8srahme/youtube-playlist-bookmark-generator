@@ -5,5 +5,9 @@
 
 # misc
 .DS_Store
+takeout
+takeout-backup
+bookmarks
+datasets
 
 npm-debug.log*
