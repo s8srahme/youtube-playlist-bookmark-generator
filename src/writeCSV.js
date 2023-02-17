@@ -2,13 +2,13 @@ const fs = require("fs");
 
 const { stringify } = require("csv-stringify");
 
-const columns = ["title", "url"];
+const COLUMNS = ["video_title", "video_url"];
 
-const writeCSV = (dataArr, outputFilePath) =>
+const writeCSV = (dataArr, datasetFilePath) =>
 	new Promise((resolve, reject) => {
-		const writableStream = fs.createWriteStream(outputFilePath, { flags: "w+" });
+		const writableStream = fs.createWriteStream(datasetFilePath, { flags: "w+" });
 
-		const stringifier = stringify({ header: true, columns });
+		const stringifier = stringify({ header: true, columns: COLUMNS });
 		dataArr.forEach((row) => {
 			// Write records to the stream
 			stringifier.write(row);
@@ -19,7 +19,7 @@ const writeCSV = (dataArr, outputFilePath) =>
 
 		writableStream
 			.on("finish", () => {
-				console.log(`Finished writing data => ${outputFilePath}`);
+				console.log(`Finished writing data => ${datasetFilePath}`);
 				resolve();
 			})
 			.on("error", (err) => {
@@ -29,4 +29,4 @@ const writeCSV = (dataArr, outputFilePath) =>
 		writableStream.end();
 	});
 
-module.exports = { writeCSV, columns };
+module.exports = { writeCSV, COLUMNS };

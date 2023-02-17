@@ -1,8 +1,12 @@
 const readCSV = require("./readCSV");
+const { COLUMNS } = require("./writeCSV");
+
+const VIDEO_UNAVAILABLE = "Video unavailable";
+const PRIVATE_VIDEO = "Private video";
 
 const scraperObject = {
-	async scraper(browser, inputFilePath) {
-		const urls = await readCSV(inputFilePath);
+	async scraper(browser, takeoutFilePath) {
+		const urls = await readCSV(takeoutFilePath);
 
 		const dataArr = await new Promise(async (resolve) => {
 			try {
@@ -24,22 +28,33 @@ const scraperObject = {
 	pagePromise(browser, link) {
 		return new Promise(async (resolve) => {
 			const newPage = await browser.newPage();
+			await newPage.setDefaultTimeout(300000);
 			const dataObj = {};
 
 			try {
 				// Navigate to the selected page
 				await newPage.goto(link);
-				// Wait for the required DOM to be rendered
-				await newPage.waitForSelector("h1.style-scope.ytd-watch-metadata");
-				// Get the title for displayed video
-				const title = await newPage.$eval(
-					"h1.style-scope.ytd-watch-metadata > .style-scope.ytd-watch-metadata",
-					(el) => el.textContent
-				);
+				const videoUnavailableTitleSelector =
+					"div.promo-title.style-scope.ytd-background-promo-renderer";
+				// eslint-disable-next-line max-len
+				const arbitraryTitleSelector =
+					"h1.style-scope.ytd-watch-metadata > .style-scope.ytd-watch-metadata";
+				const privateVideoTitleSelector = ".style-scope.yt-player-error-message-renderer";
 
-				dataObj.title = title;
-				dataObj.url = link;
-				resolve(dataObj);
+				// Wait for the required DOM to be rendered
+				const foundElement = await newPage.waitForSelector(
+					[videoUnavailableTitleSelector, arbitraryTitleSelector, privateVideoTitleSelector].join(
+						","
+					)
+				);
+				// Extract title
+				const title = await newPage.evaluate((el) => el.innerText, foundElement);
+				if (title === VIDEO_UNAVAILABLE || title === PRIVATE_VIDEO) resolve(dataObj);
+				else {
+					dataObj[COLUMNS[0].toString()] = title;
+					dataObj[COLUMNS[1].toString()] = link;
+					resolve(dataObj);
+				}
 			} catch (error) {
 				console.log(`Error in ${link} => ${error.message}`);
 				resolve(dataObj);
