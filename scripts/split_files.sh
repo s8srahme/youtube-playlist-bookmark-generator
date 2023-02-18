@@ -4,9 +4,6 @@
 # Usage: command [ABSOLUTE_DIRECTORY_PATH] [FILE_EXTENSION] [NUMBER_OF_LINES_PER_FILE]
 
 function split_files() {
-	local current_directory
-	current_directory="$(pwd)"
-	echo "$current_directory"
 	cd "$1" || return
 
 	for filepath in "$1"/*; do
@@ -25,8 +22,6 @@ function split_files() {
 			mv "$filepath" "$filepath.$2"
 		fi
 	done
-
-	cd "$current_directory" || return
 }
 
 split_files "$@"

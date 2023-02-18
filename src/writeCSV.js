@@ -4,9 +4,9 @@ const { stringify } = require("csv-stringify");
 
 const COLUMNS = ["video_title", "video_url"];
 
-const writeCSV = (dataArr, datasetFilePath) =>
+const writeCSV = (dataArr, datasetsFilePath) =>
 	new Promise((resolve, reject) => {
-		const writableStream = fs.createWriteStream(datasetFilePath, { flags: "w+" });
+		const writableStream = fs.createWriteStream(datasetsFilePath, { flags: "w+" });
 
 		const stringifier = stringify({ header: true, columns: COLUMNS });
 		dataArr.forEach((row) => {
@@ -19,7 +19,7 @@ const writeCSV = (dataArr, datasetFilePath) =>
 
 		writableStream
 			.on("finish", () => {
-				console.log(`Finished writing data => ${datasetFilePath}`);
+				console.log(`Finished writing data => ${datasetsFilePath}`);
 				resolve();
 			})
 			.on("error", (err) => {

@@ -2,18 +2,18 @@ const fs = require("fs");
 
 const { parse } = require("csv-parse");
 
-const readCSV = (takeoutFilePath) =>
+const readCSV = (chunksFilePath) =>
 	new Promise((resolve, reject) => {
-		let urls = [];
+		let rows = [];
 
-		fs.createReadStream(takeoutFilePath)
+		fs.createReadStream(chunksFilePath)
 			.pipe(parse({ delimiter: ",", from_line: 2 }))
-			.on("data", (url) => {
-				urls = [...urls, url[0]];
+			.on("data", (row) => {
+				rows = [...rows, row];
 			})
 			.on("end", () => {
-				console.log(`Finished reading csv => ${takeoutFilePath}`);
-				resolve(urls);
+				console.log(`Finished reading csv => ${chunksFilePath}`);
+				resolve(rows);
 			})
 			.on("error", (error) => {
 				console.log(error.message);

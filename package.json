@@ -4,13 +4,17 @@
 	"description": "A simple web scraping tool.",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "node index.js",
 		"lint:check": "eslint . --ext .js",
 		"lint:fix": "eslint . --ext .js --fix",
 		"prettier:check": "prettier --check 'src/**/*.{js,json}'",
 		"prettier:format-src": "prettier --write 'src/**/*.{js,json}'",
-		"prettier:format-scripts": "prettier --write 'scripts/**/*.sh'"
+		"prettier:format-scripts": "prettier --write 'scripts/**/*.sh'",
+		"shell:catenate-files": "./scripts/catenate_files.sh",
+		"shell:clean-files": "./scripts/clean_files.sh",
+		"shell:load-modules": "./scripts/load_modules.sh",
+		"shell:rename-extensions": "./scripts/rename_extensions.sh",
+		"shell:split-files": "./scripts/split_files.sh"
 	},
 	"author": "s8srahme",
 	"license": "ISC",
