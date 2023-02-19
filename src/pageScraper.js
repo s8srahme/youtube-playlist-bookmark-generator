@@ -29,7 +29,7 @@ const scraperObject = {
 	pagePromise(browser, link) {
 		return new Promise(async (resolve) => {
 			const newPage = await browser.newPage();
-			await newPage.setDefaultTimeout(300000);
+			await newPage.setDefaultTimeout(120000);
 			const dataObj = {};
 
 			try {

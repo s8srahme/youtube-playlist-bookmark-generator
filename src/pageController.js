@@ -22,7 +22,7 @@ async function scrapeAll(browserInstance, chunksFilePath, datasetsFilePath) {
 }
 
 async function bookmarkAll(datasetsFilePath, bookmarksFilePath) {
-	await writeBookmarks(bookmarksFilePath);
+	await writeBookmarks(datasetsFilePath, bookmarksFilePath);
 }
 
 module.exports = { scrapeAll, bookmarkAll };

@@ -7,7 +7,7 @@ function catenate_files() {
 	local filename
 	filename="$1/$2.$3"
 	find "$1" -type f -name "$2_*" -exec cat {} \; > "$filename"
-	sed -i "/^video_url,time_added/d"
+	sed -i "/^video_url,time_added/d" "$filename"
 	sed -i "/^$/d" "$filename"
 }
 

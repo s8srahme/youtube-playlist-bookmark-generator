@@ -5,9 +5,12 @@
 
 # misc
 .DS_Store
+
 takeout
 chunks
 bookmarks
 datasets
+datasets_backup
+temp
 
 npm-debug.log*
