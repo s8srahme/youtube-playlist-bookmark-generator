@@ -43,11 +43,13 @@ function load_modules() {
 	# mv "$root_directory_path"/subscriptions.csv "$datasets_directory_path"
 	# echo "Finished catenating files"
 
+	echo "Bookmarking files..."
 	for filepath in "$datasets_directory_path"/*; do
 		filename="$(echo "$filepath" | grep -oP "$regex")"
 		echo "Started bookmarking data => $filename"
 		npm start bookmark "$filename"
 	done
+	echo "Finished bookmarking files"
 }
 
 load_modules "$@"
