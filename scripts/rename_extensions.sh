@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Rename all file extensions in specified directory
-# Usage: command [DIRECTORY_PATH] [OLD_EXTENSION] [NEW_EXTENSION]
+# Rename all file extensions in matching directory
+# Usage: npm run shell:rename-extensions <absolute-directory-path> <old-extension> <new-extension>
 
 function rename_files() {
 	for filepath in "$1"/*."$2"; do

@@ -1,25 +1,31 @@
 const readCSV = require("./readCSV");
 const { COLUMNS } = require("./writeCSV");
 
-const VIDEO_UNAVAILABLE = "Video unavailable";
-const PRIVATE_VIDEO = "Private video";
+const VIDEO_UNAVAILABLE = [
+	"Video unavailable",
+	"Video nicht verfügbar",
+	"This video isn't available anymore",
+	"Dieses Video ist nicht mehr verfügbar"
+];
+const PRIVATE_VIDEO = ["Private video", "Privates Video"];
+
+const { error } = console;
 
 const scraperObject = {
-	async scraper(browser, chunksFilePath) {
-		const takeoutArr = await readCSV(chunksFilePath);
-
+	async scraper(browser, videoUrlsChunksFilePath) {
+		const playlistArr = await readCSV(videoUrlsChunksFilePath);
 		const dataArr = await new Promise(async (resolve) => {
 			try {
 				const scrapedData = await Promise.all(
-					takeoutArr.map(async (row) => {
+					playlistArr.map(async (row) => {
 						const link = row[0];
 						const currentPageData = await this.pagePromise(browser, link);
 						return currentPageData;
 					})
 				);
 				resolve(scrapedData);
-			} catch (error) {
-				console.log(`Error in ${this.fileLocation} => ${error.message}`);
+			} catch (err) {
+				error(`❌  Error in ${this.fileLocation} => ${err.message}`);
 				resolve([]);
 			}
 		});
@@ -36,22 +42,23 @@ const scraperObject = {
 				// Navigate to the selected page
 				await newPage.goto(link);
 				const videoUnavailableTitleSelector = "div.promo-title.style-scope.ytd-background-promo-renderer";
-				// eslint-disable-next-line max-len
 				const arbitraryTitleSelector = "h1.style-scope.ytd-watch-metadata > .style-scope.ytd-watch-metadata";
-				const privateVideoTitleSelector = ".style-scope.yt-player-error-message-renderer";
+				const privateVideoTitleSelector = "#reason.style-scope.yt-player-error-message-renderer";
 
 				// Wait for the required DOM to be rendered
-				const foundElement = await newPage.waitForSelector([videoUnavailableTitleSelector, arbitraryTitleSelector, privateVideoTitleSelector].join(","));
+				const foundElement = await newPage.waitForSelector(
+					[videoUnavailableTitleSelector, arbitraryTitleSelector, privateVideoTitleSelector].join(",")
+				);
 				// Extract title
 				const title = await newPage.evaluate((el) => el.innerText, foundElement);
-				if (title === VIDEO_UNAVAILABLE || title === PRIVATE_VIDEO) resolve(dataObj);
+				if ([...VIDEO_UNAVAILABLE, ...PRIVATE_VIDEO].includes(title)) resolve(dataObj);
 				else {
 					dataObj[COLUMNS[0].toString()] = title;
 					dataObj[COLUMNS[1].toString()] = link;
 					resolve(dataObj);
 				}
-			} catch (error) {
-				console.log(`Error in ${link} => ${error.message}`);
+			} catch (err) {
+				error(`❌  Error in ${link} => ${err.message}`);
 				resolve(dataObj);
 			}
 

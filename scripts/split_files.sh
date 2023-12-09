@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Split all files in specified directory
-# Usage: command [ABSOLUTE_DIRECTORY_PATH] [FILE_EXTENSION] [NUMBER_OF_LINES_PER_FILE]
+# Split all files in matching directory into smaller chunks
+# Usage: npm run shell:split-files <absolute-directory-path> <file-extension> <number-of-lines-per-line>
 
 function split_files() {
 	cd "$1" || return
@@ -17,7 +17,7 @@ function split_files() {
 			rm "$filepath"
 		else
 			if ! [[ $filepath =~ "00" ]]; then
-				echo 'video_url,time_added' | cat - "$filepath" > temp && mv temp "$filepath"
+				echo 'video_url,time_added' | cat - "$filepath" >temp && mv temp "$filepath"
 			fi
 			mv "$filepath" "$filepath.$2"
 		fi

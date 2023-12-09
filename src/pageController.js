@@ -1,28 +1,40 @@
-const formatData = require("./formatData");
 const pageScraper = require("./pageScraper");
 const writeBookmarks = require("./writeBookmarks");
 const { writeCSV, COLUMNS } = require("./writeCSV");
 
-async function scrapeAll(browserInstance, chunksFilePath, datasetsFilePath) {
+const { error } = console;
+
+const formatData = (dataArr, keys) => {
+	let formattedData = [];
+	for (const obj of dataArr) {
+		if (Object.keys(obj).length !== 0) {
+			const row = keys.map((key) => obj[key]);
+			formattedData = [...formattedData, row];
+		}
+	}
+	return formattedData;
+};
+
+async function scrapeAll(browserInstance, videoUrlsChunksFilePath, videoTitlesChunksFilePath) {
 	let browser;
 	try {
 		browser = await browserInstance;
 
 		// Call the scraper for different videos to be scraped
-		const scrapedData = await pageScraper.scraper(browser, chunksFilePath);
+		const scrapedData = await pageScraper.scraper(browser, videoUrlsChunksFilePath);
 		// console.log(`Data scraped => ${JSON.stringify(Object.entries(scrapedData), null, 2)}`);
 
 		const formattedData = formatData(scrapedData, COLUMNS);
-		await writeCSV(formattedData, datasetsFilePath);
-		console.log("The data has been scraped and saved successfully!", `View it at ${datasetsFilePath}`);
+		await writeCSV(formattedData, videoTitlesChunksFilePath);
+		// console.log("The data has been scraped and saved successfully!", `View it at ${videoTitlesChunksFilePath}`);
 	} catch (err) {
-		console.log("Could not resolve the browser instance => ", err);
+		error("❌  Could not resolve the browser instance => ", err.message);
 	}
 	await browser.close();
 }
 
-async function bookmarkAll(datasetsFilePath, bookmarksFilePath) {
-	await writeBookmarks(datasetsFilePath, bookmarksFilePath);
+async function bookmarkAll(videoTitlesFilePath, bookmarksFilePath, filenameWithoutExt) {
+	await writeBookmarks(videoTitlesFilePath, bookmarksFilePath, filenameWithoutExt);
 }
 
 module.exports = { scrapeAll, bookmarkAll };

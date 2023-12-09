@@ -1,20 +1,13 @@
 {
 	"env": {
 		"browser": true,
-		"es2021": true
+		"node": true
 	},
 	"extends": ["airbnb", "plugin:prettier/recommended"],
-	"plugins": ["prettier"],
-	"overrides": [],
-	"parserOptions": {
-		"ecmaVersion": "latest",
-		"sourceType": "module"
-	},
 	"rules": {
-		"indent": ["error", "tab"],
-		"no-tabs": "off",
-		"no-mixed-spaces-and-tabs": "error",
-		"import/no-default-export": "error",
+		"indent": ["warn", "tab"],
+		"no-mixed-spaces-and-tabs": "warn",
+		"import/no-default-export": "warn",
 		"import/order": [
 			"error",
 			{
@@ -28,16 +21,13 @@
 		],
 		"import/prefer-default-export": "off",
 		"max-len": [
-			"error",
+			"warn",
 			{
-				"code": 180
+				"code": 120
 			}
 		],
-		"no-undef": 2,
-		"no-unused-vars": "error",
-		"object-curly-spacing": ["error", "always"],
-		"quotes": ["error", "double"],
-		"semi": ["error", "always"],
+		"object-curly-spacing": ["warn", "always"],
+		"quotes": ["warn", "double"],
 		"sort-imports": [
 			"error",
 			{

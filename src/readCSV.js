@@ -2,21 +2,23 @@ const fs = require("fs");
 
 const { parse } = require("csv-parse");
 
-const readCSV = (chunksFilePath) =>
+const { log, error } = console;
+
+const readCSV = (videoUrlsChunksFilePath) =>
 	new Promise((resolve, reject) => {
 		let rows = [];
 
-		fs.createReadStream(chunksFilePath)
+		fs.createReadStream(videoUrlsChunksFilePath)
 			.pipe(parse({ delimiter: ",", from_line: 2 }))
 			.on("data", (row) => {
 				rows = [...rows, row];
 			})
 			.on("end", () => {
-				console.log(`Finished reading csv => ${chunksFilePath}`);
+				log("📖  Finished reading csv");
 				resolve(rows);
 			})
-			.on("error", (error) => {
-				console.log(error.message);
+			.on("error", (err) => {
+				error(`❌  ${err.message}`);
 				reject();
 			});
 	});
