@@ -1,4 +1,4 @@
-# 💻 YouTube Playlist Bookmark Generator
+# 🎶 YouTube Playlist Bookmark Generator
 
 > `ypbg` is a CLI tool designed to convert `csv` files with YouTube playlist data into bookmark `html` files that can be imported in Firefox and Chrome.
 
@@ -15,7 +15,7 @@
 
 ## 📦 Installation
 
-> Once you have `Node.js` runtime environment on your local development machine (Unix system), follow these steps to install the tool globally:
+> Once you have `NodeJS` runtime environment on your local development machine (Unix system), follow these steps to install the tool globally:
 
 ```bash
 git clone https://github.com/s8srahme/youtube-playlist-bookmark-generator.git
